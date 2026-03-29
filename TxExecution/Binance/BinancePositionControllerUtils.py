@@ -46,12 +46,18 @@ def add_amount_to_order(order_without_amount, amount: float) -> dict:
 
 def parse_trade_data_from_response(response) -> dict:
     try:
+        # Extract fill price: prefer avgPrice (VWAP), fall back to price
+        raw_fill = response.get('avgPrice') or response.get('price')
+        fill_price = float(raw_fill) if raw_fill else None
+
         trade_data = {
             "exchange": "Binance",
             "symbol": response['symbol'],
             "side": response['side'],
             "size": response['executedQty'],
-            "liquidation_price": response['liquidationPrice']
+            "liquidation_price": response['liquidationPrice'],
+            "fill_price": fill_price,
+            "is_hedge": False
         }
         return trade_data
 

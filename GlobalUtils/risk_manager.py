@@ -7,10 +7,12 @@ import time
 import json
 import sqlite3
 from datetime import datetime, timedelta
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # dotenv not required in test/CI environments
 from GlobalUtils.logger import logger
-
-load_dotenv()
 
 
 class RiskManager:
@@ -201,18 +203,29 @@ class RiskManager:
     # Private helpers
     
     def _get_current_exposure_for_asset(self, symbol: str) -> float:
-        """Get current USD notional exposure for a given asset."""
+        """Get current USD notional exposure for a given asset.
+        Positions without fill_price contribute $0 exposure (fail-safe)."""
         try:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
                 # Multiply size_in_asset by fill_price to get USD notional
-                # Fall back to size_in_asset if fill_price is NULL (legacy rows)
+                # fill_price=NULL -> 0 exposure (fail-safe: never undercount silently)
                 cursor.execute(
-                    """SELECT COALESCE(SUM(ABS(size_in_asset) * COALESCE(fill_price, 1)), 0) 
+                    """SELECT COALESCE(SUM(ABS(size_in_asset) * COALESCE(fill_price, 0)), 0) 
                        FROM trade_log WHERE symbol = ? AND open_close = 'Open'""",
                     (symbol,)
                 )
-                return float(cursor.fetchone()[0])
+                exposure = float(cursor.fetchone()[0])
+                # Warn if any rows are missing fill_price
+                cursor.execute(
+                    """SELECT COUNT(*) FROM trade_log 
+                       WHERE symbol = ? AND open_close = 'Open' AND fill_price IS NULL""",
+                    (symbol,)
+                )
+                missing = cursor.fetchone()[0]
+                if missing > 0:
+                    logger.warning(f"RiskManager - {missing} open trade(s) for {symbol} missing fill_price; exposure may be understated")
+                return exposure
         except Exception as e:
             logger.error(f"RiskManager - Error getting asset exposure for {symbol}: {e}")
             return 0.0
@@ -223,7 +236,7 @@ class RiskManager:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
                 cursor.execute(
-                    """SELECT COALESCE(SUM(ABS(size_in_asset) * COALESCE(fill_price, 1)), 0) 
+                    """SELECT COALESCE(SUM(ABS(size_in_asset) * COALESCE(fill_price, 0)), 0) 
                        FROM trade_log WHERE exchange = ? AND open_close = 'Open'""",
                     (exchange,)
                 )
@@ -238,7 +251,7 @@ class RiskManager:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
                 cursor.execute(
-                    """SELECT COALESCE(SUM(ABS(size_in_asset) * COALESCE(fill_price, 1)), 0) 
+                    """SELECT COALESCE(SUM(ABS(size_in_asset) * COALESCE(fill_price, 0)), 0) 
                        FROM trade_log WHERE open_close = 'Open'"""
                 )
                 return float(cursor.fetchone()[0])

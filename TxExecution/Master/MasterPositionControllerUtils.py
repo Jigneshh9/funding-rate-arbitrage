@@ -1,9 +1,11 @@
 import os
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # dotenv not required in test/CI environments
 from GlobalUtils.logger import logger
 from GlobalUtils.globalUtils import *
-
-load_dotenv()
 
 def adjust_collateral_allocation(collateral_amounts: dict, long_exchange: str, short_exchange: str) -> float:
     try:

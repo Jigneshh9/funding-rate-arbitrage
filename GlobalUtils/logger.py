@@ -7,13 +7,13 @@ except ImportError:
     _HAS_PUBSUB = False
 from functools import wraps
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 class JSONFormatter(logging.Formatter):
     """Format log records as JSON for structured logging / log aggregation."""
     def format(self, record):
         log_entry = {
-            'timestamp': datetime.utcnow().isoformat() + 'Z',
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'level': record.levelname,
             'module': record.name,
             'message': record.getMessage(),

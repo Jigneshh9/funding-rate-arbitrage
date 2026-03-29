@@ -93,7 +93,7 @@ body {
   display: flex; align-items: center; gap: 8px;
 }
 .section-title::before {
-  content: '▎';
+  content: '\25CE';
   color: var(--amber);
 }
 
@@ -469,7 +469,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 <!-- ═══════════════════ DEMO BANNER ═══════════════════ -->
 <div class="demo-banner" id="demoBanner">
-  ⚠ DEMO MODE — All metrics and trade data shown are simulated for presentation purposes
+  &#9888; DEMO MODE &mdash; All metrics and trade data shown are simulated for presentation purposes
 </div>
 
 <!-- ═══════════════════ NAV ═══════════════════ -->
@@ -514,10 +514,10 @@ input[type="range"]::-webkit-slider-thumb {
   </div>
 
   <div class="stat-badges">
-    <div class="badge badge-amber">◈ Funding Spreads Detected</div>
-    <div class="badge badge-lime">◈ Risk Checks Active</div>
-    <div class="badge badge-amber">◈ Backtesting Module</div>
-    <div class="badge badge-lime">◈ Recovery System</div>
+    <div class="badge badge-amber">&#9672; Funding Spreads Detected</div>
+    <div class="badge badge-lime">&#9672; Risk Checks Active</div>
+    <div class="badge badge-amber">&#9672; Backtesting Module</div>
+    <div class="badge badge-lime">&#9672; Recovery System</div>
   </div>
 </section>
 
@@ -542,7 +542,7 @@ input[type="range"]::-webkit-slider-thumb {
     </div>
     <div class="compare-arrow">
       <div class="arrow-text">System detects<br/>spread</div>
-      <div class="arrow-icon">⟶</div>
+      <div class="arrow-icon">&rarr;</div>
       <div class="arrow-text">Executes<br/>hedge</div>
     </div>
     <div class="compare-box">
@@ -633,41 +633,41 @@ input[type="range"]::-webkit-slider-thumb {
       API Caller
       <div class="arch-tooltip">Fetches live funding rates from all connected exchanges</div>
     </div>
-    <div class="arch-arrow">→</div>
+    <div class="arch-arrow">&rarr;</div>
     <div class="arch-box">
       Matching Engine
       <div class="arch-tooltip">Pairs exchanges by symbol and identifies funding rate spreads</div>
     </div>
-    <div class="arch-arrow">→</div>
+    <div class="arch-arrow">&rarr;</div>
     <div class="arch-box">
       Profitability Checker
       <div class="arch-tooltip">Validates spread after fees, slippage, and collateral costs</div>
     </div>
-    <div class="arch-arrow">→</div>
+    <div class="arch-arrow">&rarr;</div>
     <div class="arch-box">
       Execution Engine
       <div class="arch-tooltip">Opens hedged long/short positions across two exchanges</div>
     </div>
   </div>
   <div style="text-align:center;padding:6px 0;">
-    <span class="arch-arrow" style="font-size:14px;">↓</span>
+    <span class="arch-arrow" style="font-size:14px;">&darr;</span>
   </div>
   <div class="arch-grid">
     <div class="arch-box">
       Risk Manager
       <div class="arch-tooltip">Enforces exposure limits, leverage caps, daily loss caps</div>
     </div>
-    <div class="arch-arrow">←</div>
+    <div class="arch-arrow">&larr;</div>
     <div class="arch-box">
       Trade Database
       <div class="arch-tooltip">Stores trade logs, PnL, fill prices, fees, and lifecycle state</div>
     </div>
-    <div class="arch-arrow">←</div>
+    <div class="arch-arrow">&larr;</div>
     <div class="arch-box">
       Position Monitor
       <div class="arch-tooltip">Watches open positions for delta drift and funding capture</div>
     </div>
-    <div class="arch-arrow">←</div>
+    <div class="arch-arrow">&larr;</div>
     <div class="arch-box">
       State Manager
       <div class="arch-tooltip">Persists state and detects orphaned legs on recovery</div>
@@ -758,17 +758,17 @@ input[type="range"]::-webkit-slider-thumb {
   </div>
   <div class="workflow-steps" id="workflowSteps">
     <div class="wf-step" data-idx="0">Fetch Rates</div>
-    <div class="wf-arrow">→</div>
+    <div class="wf-arrow">&rarr;</div>
     <div class="wf-step" data-idx="1">Find Spread</div>
-    <div class="wf-arrow">→</div>
+    <div class="wf-arrow">&rarr;</div>
     <div class="wf-step" data-idx="2">Validate</div>
-    <div class="wf-arrow">→</div>
+    <div class="wf-arrow">&rarr;</div>
     <div class="wf-step" data-idx="3">Execute</div>
-    <div class="wf-arrow">→</div>
+    <div class="wf-arrow">&rarr;</div>
     <div class="wf-step" data-idx="4">Monitor</div>
-    <div class="wf-arrow">→</div>
+    <div class="wf-arrow">&rarr;</div>
     <div class="wf-step" data-idx="5">Close</div>
-    <div class="wf-arrow">→</div>
+    <div class="wf-arrow">&rarr;</div>
     <div class="wf-step" data-idx="6">Log</div>
   </div>
 </section>
@@ -840,18 +840,18 @@ input[type="range"]::-webkit-slider-thumb {
 <section class="section" id="highlights">
   <div class="section-title">Project Highlights</div>
   <div class="tag-grid">
-    <div class="tag">◈ Modular Architecture</div>
-    <div class="tag">◈ Event-Driven Design</div>
-    <div class="tag">◈ Database Logging</div>
-    <div class="tag">◈ Backtesting Engine</div>
-    <div class="tag">◈ Multi-Exchange Integration</div>
-    <div class="tag">◈ Async Execution</div>
-    <div class="tag">◈ Risk Management</div>
-    <div class="tag">◈ Delta-Neutral Strategy</div>
-    <div class="tag">◈ Crash Recovery</div>
-    <div class="tag">◈ Structured Logging</div>
-    <div class="tag">◈ Config Validation</div>
-    <div class="tag">◈ Metrics &amp; Alerting</div>
+    <div class="tag">&#9672; Modular Architecture</div>
+    <div class="tag">&#9672; Event-Driven Design</div>
+    <div class="tag">&#9672; Database Logging</div>
+    <div class="tag">&#9672; Backtesting Engine</div>
+    <div class="tag">&#9672; Multi-Exchange Integration</div>
+    <div class="tag">&#9672; Async Execution</div>
+    <div class="tag">&#9672; Risk Management</div>
+    <div class="tag">&#9672; Delta-Neutral Strategy</div>
+    <div class="tag">&#9672; Crash Recovery</div>
+    <div class="tag">&#9672; Structured Logging</div>
+    <div class="tag">&#9672; Config Validation</div>
+    <div class="tag">&#9672; Metrics &amp; Alerting</div>
   </div>
 </section>
 
@@ -907,13 +907,13 @@ function updateSimulator() {
   }
 
   if (reasons.length === 0) {
-    statusEl.textContent = 'PASS ✅';
+    statusEl.textContent = 'PASS';
     statusEl.style.color = 'var(--lime)';
     reasonEl.textContent = '';
   } else {
-    statusEl.textContent = 'FAIL ❌';
+    statusEl.textContent = 'FAIL';
     statusEl.style.color = 'var(--red)';
-    reasonEl.textContent = 'Reject reasons: ' + reasons.join(' · ');
+    reasonEl.textContent = 'Reject reasons: ' + reasons.join(' | ');
     reasonEl.style.color = 'var(--red)';
   }
 }

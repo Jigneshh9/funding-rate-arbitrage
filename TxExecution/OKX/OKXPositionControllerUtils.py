@@ -47,12 +47,18 @@ def add_amount_to_order(order_without_amount, amount: float) -> dict:
 
 def parse_trade_data_from_response(response) -> dict:
     try:
+        # Extract fill price from OKX response
+        raw_fill = response.get('fillPx') or response.get('avgPx') or response.get('px')
+        fill_price = float(raw_fill) if raw_fill else None
+
         trade_data = {
             "exchange": "OKX",
             "symbol": response['symbol'],
             "side": response['side'],
             "size": response['executedQty'],
-            "liquidation_price": response['liquidationPrice']
+            "liquidation_price": response['liquidationPrice'],
+            "fill_price": fill_price,
+            "is_hedge": False
         }
         return trade_data
 
