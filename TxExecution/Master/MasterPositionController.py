@@ -1,6 +1,4 @@
 from TxExecution.Binance.BinancePositionController import BinancePositionController
-# from TxExecution.Synthetix.SynthetixPositionController import SynthetixPositionController
-# from TxExecution.HMX.HMXPositionController import HMXPositionController
 from TxExecution.ByBit.ByBitPositionController import ByBitPositionController
 from TxExecution.OKX.OKXPositionController import OKXPositionController
 from TxExecution.GMX.GMXPositionController import GMXPositionController
@@ -18,11 +16,8 @@ from GlobalUtils.globalUtils import *
 
 class MasterPositionController:
     def __init__(self):
-        # self.synthetix = SynthetixPositionController()
         self.binance = BinancePositionController()
-        # self.hmx = HMXPositionController()
         self.bybit = ByBitPositionController()
-        # self.okx = OKXPositionController()
         self.gmx = GMXPositionController()
         self.perennial = PerennialPositionController()
         self.risk_manager = RiskManager()
@@ -57,7 +52,6 @@ class MasterPositionController:
             }
 
             is_hedge = get_is_hedge(opportunity)
-            order_id = generate_order_id()
 
             position_data_dict = {}
 
@@ -70,6 +64,8 @@ class MasterPositionController:
                     logger.warning(f"MasterPositionController - Duplicate order detected for {symbol} on {exchange_name} ({side}). Skipping.")
                     continue
 
+                # Generate a unique order ID per leg to avoid overwriting the first registration
+                order_id = generate_order_id()
                 self.order_tracker.register_order(order_id, exchange_name, symbol, side)
 
                 execute_trade_method = getattr(self, exchange_name.lower()).execute_trade

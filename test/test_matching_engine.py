@@ -119,20 +119,25 @@ class TestSymbolNormalization(unittest.TestCase):
     def test_normalize_binance_symbol(self):
         """Test Binance symbol format (BTCUSDT -> BTC)."""
         from MatchingEngine.MatchingEngineUtils import normalize_symbol
-        self.assertEqual(normalize_symbol('BTCUSDT', 'Binance'), 'BTC')
-        self.assertEqual(normalize_symbol('ETHUSDT', 'Binance'), 'ETH')
+        self.assertEqual(normalize_symbol('BTCUSDT'), 'BTC')
+        self.assertEqual(normalize_symbol('ETHUSDT'), 'ETH')
     
-    def test_normalize_bybit_symbol(self):
-        """Test ByBit symbol format (BTCUSDT -> BTC)."""
+    def test_normalize_perp_symbol(self):
+        """Test PERP symbol format (BTCPERP -> BTC)."""
         from MatchingEngine.MatchingEngineUtils import normalize_symbol
-        self.assertEqual(normalize_symbol('BTCUSDT', 'ByBit'), 'BTC')
+        self.assertEqual(normalize_symbol('BTCPERP'), 'BTC')
+        self.assertEqual(normalize_symbol('ETHPERP'), 'ETH')
     
-    def test_normalize_unknown_exchange(self):
-        """Test handling of unknown exchange format."""
+    def test_normalize_usd_symbol(self):
+        """Test USD symbol format (BTCUSD -> BTC)."""
         from MatchingEngine.MatchingEngineUtils import normalize_symbol
-        # Should return the symbol unchanged or handle gracefully
-        result = normalize_symbol('BTC', 'UnknownExchange')
-        self.assertIsNotNone(result)
+        self.assertEqual(normalize_symbol('BTCUSD'), 'BTC')
+    
+    def test_normalize_plain_symbol(self):
+        """Test plain symbol passes through unchanged."""
+        from MatchingEngine.MatchingEngineUtils import normalize_symbol
+        self.assertEqual(normalize_symbol('BTC'), 'BTC')
+        self.assertEqual(normalize_symbol('ETH'), 'ETH')
 
 
 if __name__ == '__main__':

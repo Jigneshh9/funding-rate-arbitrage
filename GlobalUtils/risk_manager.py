@@ -201,11 +201,15 @@ class RiskManager:
     # Private helpers
     
     def _get_current_exposure_for_asset(self, symbol: str) -> float:
+        """Get current USD notional exposure for a given asset."""
         try:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
+                # Multiply size_in_asset by fill_price to get USD notional
+                # Fall back to size_in_asset if fill_price is NULL (legacy rows)
                 cursor.execute(
-                    "SELECT COALESCE(SUM(ABS(size_in_asset)), 0) FROM trade_log WHERE symbol = ? AND open_close = 'Open'",
+                    """SELECT COALESCE(SUM(ABS(size_in_asset) * COALESCE(fill_price, 1)), 0) 
+                       FROM trade_log WHERE symbol = ? AND open_close = 'Open'""",
                     (symbol,)
                 )
                 return float(cursor.fetchone()[0])
@@ -214,11 +218,13 @@ class RiskManager:
             return 0.0
     
     def _get_current_exposure_for_exchange(self, exchange: str) -> float:
+        """Get current USD notional exposure for a given exchange."""
         try:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
                 cursor.execute(
-                    "SELECT COALESCE(SUM(ABS(size_in_asset)), 0) FROM trade_log WHERE exchange = ? AND open_close = 'Open'",
+                    """SELECT COALESCE(SUM(ABS(size_in_asset) * COALESCE(fill_price, 1)), 0) 
+                       FROM trade_log WHERE exchange = ? AND open_close = 'Open'""",
                     (exchange,)
                 )
                 return float(cursor.fetchone()[0])
@@ -227,11 +233,13 @@ class RiskManager:
             return 0.0
     
     def _get_total_exposure(self) -> float:
+        """Get total USD notional exposure across all open positions."""
         try:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
                 cursor.execute(
-                    "SELECT COALESCE(SUM(ABS(size_in_asset)), 0) FROM trade_log WHERE open_close = 'Open'"
+                    """SELECT COALESCE(SUM(ABS(size_in_asset) * COALESCE(fill_price, 1)), 0) 
+                       FROM trade_log WHERE open_close = 'Open'"""
                 )
                 return float(cursor.fetchone()[0])
         except Exception as e:

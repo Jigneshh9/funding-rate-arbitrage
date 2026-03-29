@@ -5,15 +5,19 @@ import os
 
 def _load_config():
     """Load configuration from config.json, with fallback to defaults."""
-    config_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'config.json')
+    # __file__ is APICaller/master/MasterUtils.py → go up 3 levels to reach project root
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    config_path = os.path.join(project_root, 'config.json')
     try:
         if os.path.exists(config_path):
             with open(config_path, 'r') as f:
                 config = json.load(f)
-            logger.info("MasterUtils - Loaded configuration from config.json")
+            logger.info(f"MasterUtils - Loaded configuration from {config_path}")
             return config
+        else:
+            logger.warning(f"MasterUtils - config.json not found at {config_path}, using defaults")
     except Exception as e:
-        logger.warning(f"MasterUtils - Failed to load config.json, using defaults: {e}")
+        logger.warning(f"MasterUtils - Failed to load config.json at {config_path}, using defaults: {e}")
     
     # Fallback defaults
     return {
@@ -140,8 +144,7 @@ def get_target_tokens_for_perennial() -> list:
         if 'mog' in symbols:
             symbols.remove('mog')
         
-        for symbol in symbols:
-            symbol = symbol.upper()
+        symbols = [s.upper() for s in symbols]
         
         return symbols
     except Exception as e:
