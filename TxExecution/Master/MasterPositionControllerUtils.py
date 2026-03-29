@@ -30,7 +30,7 @@ def adjust_collateral_allocation(collateral_amounts: dict, long_exchange: str, s
 def is_collateral_ratio_acceptable(collateral_amounts: dict, min_ratio=0.01):
     try:
         long_collateral = collateral_amounts['long_exchange']
-        short_collateral = collateral_amounts['long_exchange']
+        short_collateral = collateral_amounts['short_exchange']
         
         if long_collateral >= short_collateral:
             ratio = short_collateral / long_collateral if long_collateral > 0 else 0

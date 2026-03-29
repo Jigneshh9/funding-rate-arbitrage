@@ -2,15 +2,45 @@ import logging
 import inspect
 from pubsub import pub
 from functools import wraps
+import json
+from datetime import datetime
+
+class JSONFormatter(logging.Formatter):
+    """Format log records as JSON for structured logging / log aggregation."""
+    def format(self, record):
+        log_entry = {
+            'timestamp': datetime.utcnow().isoformat() + 'Z',
+            'level': record.levelname,
+            'module': record.name,
+            'message': record.getMessage(),
+        }
+        if record.exc_info and record.exc_info[0]:
+            log_entry['exception'] = self.formatException(record.exc_info)
+        return json.dumps(log_entry)
 
 # Setup for the general application logger
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# File handler — human-readable format
 app_handler = logging.FileHandler('app.log')
 app_handler.setLevel(logging.INFO)
 app_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 app_handler.setFormatter(app_formatter)
 logger.addHandler(app_handler)
-logger.setLevel(logging.INFO)
+
+# JSON file handler — structured format for log aggregation
+json_handler = logging.FileHandler('app_structured.log')
+json_handler.setLevel(logging.INFO)
+json_handler.setFormatter(JSONFormatter())
+logger.addHandler(json_handler)
+
+# Console handler — real-time visibility
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+console_formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s', datefmt='%H:%M:%S')
+console_handler.setFormatter(console_formatter)
+logger.addHandler(console_handler)
 
 # Setup for the function tracker logger
 function_logger = logging.getLogger("FunctionTracker")

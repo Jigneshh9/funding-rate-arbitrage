@@ -205,5 +205,62 @@ HMX also uses market price.
 
 In current implementation, anyone running the bot over longer periods of time (or using really high leverage) will have to manually rebalance collateral across exchanges after a couple of trades due to the PnL imbalancing collateral amounts. If one wanted to maximise size on every trade, they would do this often.
 
+## Operator Runbook
+
+### Startup Sequence
+
+1. **Configure environment**: Copy `example.env` to `.env` and fill in all required values.
+2. **Configure trading targets**: Edit `config.json` to set which tokens and exchanges to target (set `is_target: true`).
+3. **Validate configuration**: The bot runs configuration validation at startup and will fail with clear error messages if anything is missing.
+4. **Install**: `pip install -e .`
+5. **Start the bot**: `project-run` (continuous scan loop) or `project-run-demo` for demo mode.
+6. **Monitor**: Watch `app.log` (human-readable) and `app_structured.log` (JSON format for log aggregation). Console output provides real-time visibility.
+
+### Testnet Checklist
+
+Before running with real capital, verify on testnet:
+- [ ] Bot starts and validates all configuration
+- [ ] Funding rates are fetched successfully from all target exchanges  
+- [ ] Arbitrage opportunities are detected and logged
+- [ ] Trade execution succeeds on both legs
+- [ ] Position monitoring detects and logs open positions
+- [ ] Position closing works (both manual trigger and automatic)
+- [ ] Graceful shutdown (Ctrl+C) saves state correctly
+- [ ] Restart reconciles open positions from the database
+
+### Recovery Procedures
+
+**Partial Fill (One Leg Only)**:  
+The bot now automatically rolls back succeeded legs when the second leg fails. Check logs for `POSITION_OPEN_ERROR` entries. If an orphaned leg persists, the next startup will detect and attempt to close it.
+
+**Crash Recovery**:  
+On startup, the bot automatically reconciles open positions from the database with exchange state. Orphaned single-leg positions are detected and logged. Manual closure may be required via exchange UI for complex failure cases.
+
+**Daily Loss Cap Hit**:  
+When the daily loss cap is reached, the bot stops opening new positions but does NOT close existing ones. Review and reset is manual.
+
+**Emergency Kill Switch**:  
+Set `EMERGENCY_KILL_SWITCH=true` in `.env` and restart the bot. No new trades will be opened. Existing positions remain open and must be managed manually.
+
+### Key Rotation
+
+1. Generate new API keys on the exchange
+2. Update `.env` with new keys
+3. Restart the bot (graceful shutdown with Ctrl+C first)
+4. Delete old API keys on the exchange
+
+### Configuration Guide
+
+| Variable | Description | Default |
+|---|---|---|
+| `MAX_EXPOSURE_PER_ASSET_USD` | Max USD exposure per asset | 5000 |
+| `MAX_EXPOSURE_PER_EXCHANGE_USD` | Max USD exposure per exchange | 10000 |
+| `MAX_TOTAL_EXPOSURE_USD` | Max total USD exposure | 20000 |
+| `MAX_LEVERAGE` | Maximum allowed leverage | 10 |
+| `DAILY_LOSS_CAP_USD` | Daily realized loss cap | 500 |
+| `MAX_FUNDING_HORIZON_HOURS` | Force exit after N hours | 72 |
+| `EMERGENCY_KILL_SWITCH` | Block all new trades | false |
+| `REHEDGE_THRESHOLD` | Delta drift threshold for re-hedge alerts | 0.05 |
+
 ## Tech Support 
 Any further questions please join the telegram chat at https://t.me/+ualID7ueKuJjMWJk

@@ -26,19 +26,35 @@ class TradeLogger:
             conn.execute('''CREATE TABLE IF NOT EXISTS trade_log (
                         id INTEGER PRIMARY KEY,
                         strategy_execution_id TEXT NOT NULL,
+                        order_id TEXT,
                         exchange TEXT NOT NULL,
                         symbol TEXT NOT NULL,
                         side TEXT NOT NULL,
                         is_hedge TEXT NOT NULL,
                         size_in_asset REAL NOT NULL,
+                        fill_price REAL,
+                        fees REAL DEFAULT 0,
+                        tx_hash TEXT,
                         liquidation_price REAL NOT NULL,
                         open_close TEXT NOT NULL,
+                        lifecycle_state TEXT DEFAULT 'detected',
+                        execution_attempts INTEGER DEFAULT 0,
+                        reconciliation_state TEXT DEFAULT 'pending',
                         open_time DATETIME,
                         close_time DATETIME,
                         pnl REAL,
                         accrued_funding REAL,
-                        close_reason TEXT
+                        close_reason TEXT,
+                        UNIQUE(strategy_execution_id, exchange)
                     );''')
+            
+            # Create indices for common queries
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_open_close ON trade_log(open_close);')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_lifecycle_state ON trade_log(lifecycle_state);')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_symbol ON trade_log(symbol);')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_exchange ON trade_log(exchange);')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_execution_id ON trade_log(strategy_execution_id);')
+            
             logger.info("TradeLogger - Database accessed successfully.")
             return conn
         except sqlite3.Error as e:

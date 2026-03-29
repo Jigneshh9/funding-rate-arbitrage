@@ -28,7 +28,17 @@ class matchingEngine:
                     skew1 = rates_by_exchange[ex1][symbol]['skew_usd']
                     skew2 = rates_by_exchange[ex2][symbol]['skew_usd']
 
-                    if (rate1 > 0 and rate2 > 0) or (rate1 < 0 and rate2 < 0):
+                    long_exchange = None
+                    short_exchange = None
+                    long_rate = None
+                    short_rate = None
+                    long_exchange_skew = None
+                    short_exchange_skew = None
+
+                    if rate1 == 0 and rate2 == 0:
+                        # No arbitrage opportunity when both rates are zero
+                        continue
+                    elif (rate1 > 0 and rate2 > 0) or (rate1 < 0 and rate2 < 0):
                         if rate1 > rate2:
                             long_exchange, short_exchange = ex2, ex1
                             long_rate, short_rate = rate2, rate1
@@ -37,11 +47,11 @@ class matchingEngine:
                             long_exchange, short_exchange = ex1, ex2
                             long_rate, short_rate = rate1, rate2
                             long_exchange_skew, short_exchange_skew = skew1, skew2
-                    elif rate1 > 0 and rate2 < 0:
+                    elif rate1 > 0 and rate2 <= 0:
                         long_exchange, short_exchange = ex2, ex1
                         long_rate, short_rate = rate2, rate1
                         long_exchange_skew, short_exchange_skew = skew2, skew1
-                    elif rate1 < 0 and rate2 > 0:
+                    elif rate1 <= 0 and rate2 > 0:
                         long_exchange, short_exchange = ex1, ex2
                         long_rate, short_rate = rate1, rate2
                         long_exchange_skew, short_exchange_skew = skew1, skew2

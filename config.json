@@ -1,0 +1,34 @@
+{
+    "target_tokens": [
+        {"token": "BTC", "is_target": true},
+        {"token": "ETH", "is_target": true},
+        {"token": "SNX", "is_target": false},
+        {"token": "SOL", "is_target": false},
+        {"token": "W", "is_target": false},
+        {"token": "WIF", "is_target": false},
+        {"token": "ARB", "is_target": false},
+        {"token": "BNB", "is_target": false},
+        {"token": "ENA", "is_target": false},
+        {"token": "DOGE", "is_target": false},
+        {"token": "AVAX", "is_target": false},
+        {"token": "PENDLE", "is_target": false},
+        {"token": "NEAR", "is_target": false},
+        {"token": "AAVE", "is_target": false},
+        {"token": "ATOM", "is_target": false},
+        {"token": "LINK", "is_target": false},
+        {"token": "UNI", "is_target": false},
+        {"token": "LTC", "is_target": false},
+        {"token": "OP", "is_target": false},
+        {"token": "GMX", "is_target": false},
+        {"token": "PEPE", "is_target": false}
+    ],
+    "target_exchanges": [
+        {"exchange": "Synthetix", "is_target": false},
+        {"exchange": "Binance", "is_target": false},
+        {"exchange": "ByBit", "is_target": true},
+        {"exchange": "HMX", "is_target": false},
+        {"exchange": "OKX", "is_target": false},
+        {"exchange": "GMX", "is_target": false},
+        {"exchange": "Perennial", "is_target": true}
+    ]
+}

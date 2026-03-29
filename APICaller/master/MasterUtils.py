@@ -1,39 +1,59 @@
 from GlobalUtils.logger import logger
 from APICaller.Perennial.perennialCallerUtils import get_all_symbols
+import json
+import os
 
-TARGET_TOKENS = [
-    {"token": "BTC", "is_target": True},
-    {"token": "ETH", "is_target": True},
-    {"token": "SNX", "is_target": False},
-    {"token": "SOL", "is_target": False},
-    {"token": "W", "is_target": False},
-    {"token": "WIF", "is_target": False},
-    {"token": "ARB", "is_target": False},
-    {"token": "BNB", "is_target": False},
-    {"token": "ENA", "is_target": False},
-    {"token": "DOGE", "is_target": False},
-    {"token": "AVAX", "is_target": False},
-    {"token": "PENDLE", "is_target": False},
-    {"token": "NEAR", "is_target": False},
-    {"token": "AAVE", "is_target": False},
-    {"token": "ATOM", "is_target": False},
-    {"token": "LINK", "is_target": False},
-    {"token": "UNI", "is_target": False},
-    {"token": "LTC", "is_target": False},
-    {"token": "OP", "is_target": False},
-    {"token": "GMX", "is_target": False},
-    {"token": "PEPE", "is_target": False},
-]
+def _load_config():
+    """Load configuration from config.json, with fallback to defaults."""
+    config_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'config.json')
+    try:
+        if os.path.exists(config_path):
+            with open(config_path, 'r') as f:
+                config = json.load(f)
+            logger.info("MasterUtils - Loaded configuration from config.json")
+            return config
+    except Exception as e:
+        logger.warning(f"MasterUtils - Failed to load config.json, using defaults: {e}")
+    
+    # Fallback defaults
+    return {
+        "target_tokens": [
+            {"token": "BTC", "is_target": True},
+            {"token": "ETH", "is_target": True},
+            {"token": "SNX", "is_target": False},
+            {"token": "SOL", "is_target": False},
+            {"token": "W", "is_target": False},
+            {"token": "WIF", "is_target": False},
+            {"token": "ARB", "is_target": False},
+            {"token": "BNB", "is_target": False},
+            {"token": "ENA", "is_target": False},
+            {"token": "DOGE", "is_target": False},
+            {"token": "AVAX", "is_target": False},
+            {"token": "PENDLE", "is_target": False},
+            {"token": "NEAR", "is_target": False},
+            {"token": "AAVE", "is_target": False},
+            {"token": "ATOM", "is_target": False},
+            {"token": "LINK", "is_target": False},
+            {"token": "UNI", "is_target": False},
+            {"token": "LTC", "is_target": False},
+            {"token": "OP", "is_target": False},
+            {"token": "GMX", "is_target": False},
+            {"token": "PEPE", "is_target": False},
+        ],
+        "target_exchanges": [
+            {"exchange": "Synthetix", "is_target": False},
+            {"exchange": "Binance", "is_target": False},
+            {"exchange": "ByBit", "is_target": True},
+            {"exchange": "HMX", "is_target": False},
+            {"exchange": "OKX", "is_target": False},
+            {"exchange": "GMX", "is_target": False},
+            {"exchange": "Perennial", "is_target": True},
+        ]
+    }
 
-TARGET_EXCHANGES = [
-    {"exchange": "Synthetix", "is_target": False},
-    {"exchange": "Binance", "is_target": False},
-    {"exchange": "ByBit", "is_target": True},
-    {"exchange": "HMX", "is_target": False},
-    {"exchange": "OKX", "is_target": False},
-    {"exchange": "GMX", "is_target": False},
-    {"exchange": "Perennial", "is_target": True},
-]
+_CONFIG = _load_config()
+TARGET_TOKENS = _CONFIG['target_tokens']
+TARGET_EXCHANGES = _CONFIG['target_exchanges']
 
 def get_target_exchanges() -> list:
     try:

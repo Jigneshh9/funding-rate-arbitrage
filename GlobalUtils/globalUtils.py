@@ -6,8 +6,6 @@ from decimal import Decimal, InvalidOperation
 from enum import Enum
 from GlobalUtils.logger import *
 # from APICaller.Synthetix.SynthetixUtils import get_synthetix_client
-from APICaller.Binance.binanceUtils import get_binance_client
-# from APICaller.HMX.HMXCallerUtils import get_HMX_client
 import functools
 import re
 import time
@@ -20,8 +18,24 @@ NULL_ADDRESS = '0x0000000000000000000000000000000000000000'
 BLOCKS_PER_DAY_BASE = 43200
 BLOCKS_PER_HOUR_BASE = 1800
 
-# GLOBAL_SYNTHETIX_CLIENT = get_synthetix_client()
-GLOBAL_BINANCE_CLIENT = get_binance_client()
+# Lazy initialization for exchange clients to avoid import-time failures
+_binance_client = None
+
+def get_global_binance_client():
+    """Get the global Binance client, creating it on first access."""
+    global _binance_client
+    if _binance_client is None:
+        try:
+            from APICaller.Binance.binanceUtils import get_binance_client
+            _binance_client = get_binance_client()
+            logger.info("globalUtils - Binance client initialized successfully")
+        except Exception as e:
+            logger.error(f"globalUtils - Failed to initialize Binance client: {e}")
+            raise
+    return _binance_client
+
+# Backward compatibility — other modules may reference this directly
+GLOBAL_BINANCE_CLIENT = None  # Use get_global_binance_client() instead
 # GLOBAL_HMX_CLIENT = get_HMX_client()
 
 # GLOBAL_OKX_PUBLIC_CLIENT = get_okx_pub_client()

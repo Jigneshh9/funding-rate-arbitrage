@@ -7,9 +7,11 @@ from TxExecution.GMX.GMXPositionController import GMXPositionController
 from TxExecution.Perennial.PerennialPositionController import PerennialPositionController
 
 from TxExecution.Master.MasterPositionControllerUtils import *
+from TxExecution.Master.execution_safety import generate_order_id, OrderTracker, execute_with_retry
 
 from PositionMonitor.Master.MasterPositionMonitorUtils import *
 from APICaller.master.MasterUtils import get_target_exchanges
+from GlobalUtils.risk_manager import RiskManager
 from pubsub import pub
 from GlobalUtils.logger import *
 from GlobalUtils.globalUtils import *
@@ -23,6 +25,8 @@ class MasterPositionController:
         # self.okx = OKXPositionController()
         self.gmx = GMXPositionController()
         self.perennial = PerennialPositionController()
+        self.risk_manager = RiskManager()
+        self.order_tracker = OrderTracker()
 
     #######################
     ### WRITE FUNCTIONS ###
@@ -36,44 +40,75 @@ class MasterPositionController:
                 logger.info("MasterPositionController - Position already open, skipping opportunity.")
                 return
 
+            # Pre-trade risk checks
             trade_size = self.get_trade_size(opportunity)
+            if trade_size is None:
+                logger.error("MasterPositionController - Could not determine trade size, aborting.")
+                return
+
+            risk_passed, risk_reason = self.risk_manager.check_all_pre_trade(opportunity, trade_size)
+            if not risk_passed:
+                logger.warning(f"MasterPositionController - Risk check failed: {risk_reason}. Skipping opportunity.")
+                return
+
             exchanges = {
                 'long_exchange': opportunity['long_exchange'],
                 'short_exchange': opportunity['short_exchange']
             }
 
             is_hedge = get_is_hedge(opportunity)
+            order_id = generate_order_id()
 
             position_data_dict = {}
 
             for role, exchange_name in exchanges.items():
                 is_long=(role == 'long_exchange')
+                side = 'long' if is_long else 'short'
+
+                # Check for duplicate orders
+                if self.order_tracker.is_duplicate(exchange_name, symbol, side):
+                    logger.warning(f"MasterPositionController - Duplicate order detected for {symbol} on {exchange_name} ({side}). Skipping.")
+                    continue
+
+                self.order_tracker.register_order(order_id, exchange_name, symbol, side)
+
                 execute_trade_method = getattr(self, exchange_name.lower()).execute_trade
-                position_data = execute_trade_method(
-                    opportunity, 
-                    is_long, 
+                position_data = execute_with_retry(
+                    execute_trade_method,
+                    max_retries=2,
+                    opportunity=opportunity, 
+                    is_long=is_long, 
                     trade_size=trade_size
                 )
 
-                is_hedge = True if is_long and is_hedge['long'] == True else False
+                is_hedge_flag = True if is_long and is_hedge['long'] == True else False
 
                 logger.info(f"MasterPositionController - {exchange_name} trade execution response: {position_data}")
 
                 if position_data:
+                    self.order_tracker.mark_filled(order_id)
                     position_data_dict[role] = position_data
                     position_data_dict[role]['exchange'] = exchanges['long_exchange'] if role == 'long_exchange' else exchanges['short_exchange']
-                    if is_hedge == True:
+                    if is_hedge_flag == True:
                         position_data_dict[role]['is_hedge'] = 'True'
-                    elif is_hedge == False:
+                    elif is_hedge_flag == False:
                         position_data_dict[role]['is_hedge'] = 'False'
+                else:
+                    self.order_tracker.mark_failed(order_id)
 
             if len(position_data_dict) == 2:
                 pub.sendMessage(EventsDirectory.POSITION_OPENED.value, position_data=position_data_dict)
                 logger.info("MasterPositionController:execute_trades - Trades executed successfully for opportunity.")
             else:
-                self.close_position_pair(symbol=symbol, reason=PositionCloseReason.POSITION_OPEN_ERROR.value, exchanges=list(exchanges.values()))
-                missing_exchanges = set(exchanges.values()) - set(position_data_dict.keys())
-                logger.error(f"MasterPositionController:execute_trades - Failed to execute trades on all required exchanges. Missing: {missing_exchanges}. Cancelling trades.")
+                # Close any legs that did succeed
+                succeeded_exchanges = [exchanges[role] for role in position_data_dict.keys()]
+                failed_roles = set(exchanges.keys()) - set(position_data_dict.keys())
+                failed_exchanges = [exchanges[role] for role in failed_roles]
+                if succeeded_exchanges:
+                    self.close_position_pair(symbol=symbol, reason=PositionCloseReason.POSITION_OPEN_ERROR.value, exchanges=succeeded_exchanges)
+                logger.error(f"MasterPositionController:execute_trades - Failed to execute trades on: {failed_exchanges}. Rolling back succeeded legs: {succeeded_exchanges}.")
+
+            self.order_tracker.clear_completed()
 
         except Exception as e:
             logger.error(f"MasterPositionController:execute_trades - Failed to process trades for {symbol}. Error: {e}")
@@ -228,8 +263,7 @@ class MasterPositionController:
                 is_hmx_position,
                 is_binance_position,
                 is_bybit_position,
-                # is_okx_position
-                # is_gmx_position,
+                is_gmx_position,
                 is_perennial_position
             ]
 
