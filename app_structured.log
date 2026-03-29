@@ -15,3 +15,101 @@
 {"timestamp": "2026-03-29T18:53:49.387977Z", "level": "INFO", "module": "GlobalUtils.logger", "message": "ExecutionSafety - Spread validation passed. Deterioration: 0.000000"}
 {"timestamp": "2026-03-29T18:53:49.388365Z", "level": "WARNING", "module": "GlobalUtils.logger", "message": "ExecutionSafety - Spread deteriorated beyond threshold. Original: 0.007000, Current: 0.000000, Deterioration: 0.007000, Max allowed: 0.001000"}
 {"timestamp": "2026-03-29T19:14:38.615671+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "MatchingEngine - Funding rates are empty or not passed correctly."}
+{"timestamp": "2026-03-29T19:21:08.337649+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "MatchingEngine - Funding rates are empty or not passed correctly."}
+{"timestamp": "2026-03-29T19:21:08.400560+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "ExecutionSafety - Attempt 1/3 failed: Temporary failure"}
+{"timestamp": "2026-03-29T19:21:08.400850+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "ExecutionSafety - Retrying in 0.01s..."}
+{"timestamp": "2026-03-29T19:21:08.411970+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "ExecutionSafety - Attempt 1/2 failed: Permanent failure"}
+{"timestamp": "2026-03-29T19:21:08.412241+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "ExecutionSafety - Retrying in 0.01s..."}
+{"timestamp": "2026-03-29T19:21:08.422919+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "ExecutionSafety - Attempt 2/2 failed: Permanent failure"}
+{"timestamp": "2026-03-29T19:21:08.423103+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "ExecutionSafety - All 2 attempts failed. Last error: Permanent failure"}
+{"timestamp": "2026-03-29T19:21:08.424078+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "ExecutionSafety - Registered order order-1 for BTC on Binance (long)"}
+{"timestamp": "2026-03-29T19:21:08.424487+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "ExecutionSafety - Registered order order-1 for BTC on Binance (long)"}
+{"timestamp": "2026-03-29T19:21:08.424906+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "ExecutionSafety - Spread validation passed. Deterioration: 0.000000"}
+{"timestamp": "2026-03-29T19:21:08.425362+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "ExecutionSafety - Spread deteriorated beyond threshold. Original: 0.007000, Current: 0.000000, Deterioration: 0.007000, Max allowed: 0.001000"}
+{"timestamp": "2026-03-29T19:21:08.452654+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:21:08.459197+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "RiskManager - Error getting asset exposure for BTC: no such column: fill_price"}
+{"timestamp": "2026-03-29T19:21:08.461108+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "RiskManager - Error getting exchange exposure for Binance: no such column: fill_price"}
+{"timestamp": "2026-03-29T19:21:08.463328+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "RiskManager - Error getting exchange exposure for ByBit: no such column: fill_price"}
+{"timestamp": "2026-03-29T19:21:08.465317+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "RiskManager - Error getting total exposure: no such column: fill_price"}
+{"timestamp": "2026-03-29T19:21:08.483766+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:21:08.504905+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - Daily loss cap reached: $600.00 >= $500.00"}
+{"timestamp": "2026-03-29T19:21:08.520909+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:21:08.551346+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:21:08.577583+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "RiskManager - Error getting asset exposure for BTC: no such column: fill_price"}
+{"timestamp": "2026-03-29T19:21:08.579979+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "RiskManager - Error getting exchange exposure for Binance: no such column: fill_price"}
+{"timestamp": "2026-03-29T19:21:08.582300+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "RiskManager - Error getting exchange exposure for ByBit: no such column: fill_price"}
+{"timestamp": "2026-03-29T19:21:08.584946+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "RiskManager - Error getting total exposure: no such column: fill_price"}
+{"timestamp": "2026-03-29T19:21:08.602267+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:21:08.609998+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "RiskManager - Error getting asset exposure for BTC: no such column: fill_price"}
+{"timestamp": "2026-03-29T19:21:08.612718+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "RiskManager - Error getting exchange exposure for Binance: no such column: fill_price"}
+{"timestamp": "2026-03-29T19:21:08.615594+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "RiskManager - Error getting exchange exposure for ByBit: no such column: fill_price"}
+{"timestamp": "2026-03-29T19:21:08.619277+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "RiskManager - Error getting total exposure: no such column: fill_price"}
+{"timestamp": "2026-03-29T19:21:08.638231+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:21:08.658836+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - Position open for 100.0h exceeds max horizon of 72.0h. Forcing exit."}
+{"timestamp": "2026-03-29T19:21:08.675820+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:21:08.691145+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:21:08.691818+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - EMERGENCY KILL SWITCH IS ACTIVE. No new trades allowed."}
+{"timestamp": "2026-03-29T19:21:08.705704+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:21:08.706210+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - EMERGENCY KILL SWITCH IS ACTIVE. No new trades allowed."}
+{"timestamp": "2026-03-29T19:21:08.720642+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:21:08.734650+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:21:08.735193+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - Leverage 15.0x exceeds max 10.0x"}
+{"timestamp": "2026-03-29T19:21:08.748903+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:14.447662+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "MatchingEngine - Funding rates are empty or not passed correctly."}
+{"timestamp": "2026-03-29T19:48:14.562737+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:14.677456+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:14.688353+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - Daily loss cap reached: $600.00 >= $500.00"}
+{"timestamp": "2026-03-29T19:48:14.701891+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:14.724216+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:14.738243+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - Asset exposure limit exceeded for BTC: current=$4550.00 + new=$1000.00 > limit=$5000.00"}
+{"timestamp": "2026-03-29T19:48:14.755438+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:14.788392+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:14.800038+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - Position open for 100.0h exceeds max horizon of 72.0h. Forcing exit."}
+{"timestamp": "2026-03-29T19:48:14.816707+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:14.845613+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:14.849815+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - EMERGENCY KILL SWITCH IS ACTIVE. No new trades allowed."}
+{"timestamp": "2026-03-29T19:48:14.867461+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:14.872463+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - EMERGENCY KILL SWITCH IS ACTIVE. No new trades allowed."}
+{"timestamp": "2026-03-29T19:48:14.888465+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:14.904858+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:14.909072+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - Leverage 15.0x exceeds max 10.0x"}
+{"timestamp": "2026-03-29T19:48:14.923127+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:44.990186+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:45.107279+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:45.117838+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - Daily loss cap reached: $600.00 >= $500.00"}
+{"timestamp": "2026-03-29T19:48:45.135234+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:45.158634+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:45.179774+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - Asset exposure limit exceeded for BTC: current=$4550.00 + new=$1000.00 > limit=$5000.00"}
+{"timestamp": "2026-03-29T19:48:45.196516+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:45.216190+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:45.225695+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - Position open for 100.0h exceeds max horizon of 72.0h. Forcing exit."}
+{"timestamp": "2026-03-29T19:48:45.245010+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:45.275268+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:45.280964+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - EMERGENCY KILL SWITCH IS ACTIVE. No new trades allowed."}
+{"timestamp": "2026-03-29T19:48:45.309389+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:45.317063+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - EMERGENCY KILL SWITCH IS ACTIVE. No new trades allowed."}
+{"timestamp": "2026-03-29T19:48:45.342039+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:45.368909+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:48:45.377158+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - Leverage 15.0x exceeds max 10.0x"}
+{"timestamp": "2026-03-29T19:48:45.408281+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:49:04.790726+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:49:04.817260+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - Asset exposure limit exceeded for BTC: current=$4550.00 + new=$1000.00 > limit=$5000.00"}
+{"timestamp": "2026-03-29T19:49:46.214065+00:00", "level": "ERROR", "module": "GlobalUtils.logger", "message": "MatchingEngine - Funding rates are empty or not passed correctly."}
+{"timestamp": "2026-03-29T19:49:46.293084+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:49:46.322485+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:49:46.331104+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - Daily loss cap reached: $600.00 >= $500.00"}
+{"timestamp": "2026-03-29T19:49:46.361028+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:49:46.397467+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:49:46.406695+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - Asset exposure limit exceeded for BTC: current=$4550.00 + new=$1000.00 > limit=$5000.00"}
+{"timestamp": "2026-03-29T19:49:46.443145+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:49:46.488699+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:49:46.499807+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - Position open for 100.0h exceeds max horizon of 72.0h. Forcing exit."}
+{"timestamp": "2026-03-29T19:49:46.529522+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:49:46.572999+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:49:46.578683+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - EMERGENCY KILL SWITCH IS ACTIVE. No new trades allowed."}
+{"timestamp": "2026-03-29T19:49:46.621046+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:49:46.627604+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - EMERGENCY KILL SWITCH IS ACTIVE. No new trades allowed."}
+{"timestamp": "2026-03-29T19:49:46.675800+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:49:46.732960+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}
+{"timestamp": "2026-03-29T19:49:46.740727+00:00", "level": "WARNING", "module": "GlobalUtils.logger", "message": "RiskManager - Leverage 15.0x exceeds max 10.0x"}
+{"timestamp": "2026-03-29T19:49:46.801639+00:00", "level": "INFO", "module": "GlobalUtils.logger", "message": "RiskManager initialized - Max exposure/asset: $5000.0, Max leverage: 10.0x, Daily loss cap: $500.0"}

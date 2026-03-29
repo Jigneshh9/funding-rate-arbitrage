@@ -1,4 +1,4 @@
-from web3 import *
+# web3 is imported lazily inside functions that need it (see initialise_client, etc.)
 import os
 from dotenv import load_dotenv
 import requests
@@ -79,8 +79,9 @@ DECIMALS = {
 def get_decimals_for_symbol(symbol):
     return DECIMALS.get(symbol, None)
 
-def initialise_client() -> Web3:
+def initialise_client():
     try:
+        from web3 import Web3
         client = Web3(Web3.HTTPProvider(os.getenv('BASE_PROVIDER_RPC')))
     except Exception as e:
         logger.error(f"GlobalUtils - Error initialising Web3 client: {e}")
@@ -248,6 +249,7 @@ def deco_retry(retry: int = 5, retry_sleep: int = 3):
 def get_arbitrum_usdc_balance_global():
     try:
         provider = os.getenv('ARBITRUM_PROVIDER_RPC')
+        from web3 import Web3
         web3_obj = Web3(Web3.HTTPProvider(provider))
         usdc_address = '0xaf88d065e77c8cC2239327C5EDb3A432268e5831'
         with open('GlobalUtils/ABIs/USDCArbitrum.json', 'r') as abi_file:

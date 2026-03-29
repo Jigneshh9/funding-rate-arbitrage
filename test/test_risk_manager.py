@@ -30,6 +30,7 @@ class TestRiskManager(unittest.TestCase):
             side TEXT NOT NULL,
             is_hedge TEXT NOT NULL,
             size_in_asset REAL NOT NULL,
+            fill_price REAL,
             liquidation_price REAL NOT NULL,
             open_close TEXT NOT NULL,
             open_time DATETIME,
@@ -55,7 +56,14 @@ class TestRiskManager(unittest.TestCase):
         self.rm = RiskManager(db_path=self.temp_db.name)
     
     def tearDown(self):
-        os.unlink(self.temp_db.name)
+        # Force close any lingering SQLite connections before unlinking
+        del self.rm
+        import gc
+        gc.collect()
+        try:
+            os.unlink(self.temp_db.name)
+        except PermissionError:
+            pass  # Windows file locking; temp file will be cleaned up later
     
     def test_kill_switch_inactive(self):
         self.assertFalse(self.rm.is_kill_switch_active())
@@ -80,7 +88,7 @@ class TestRiskManager(unittest.TestCase):
         # Insert an existing open position
         conn = sqlite3.connect(self.temp_db.name)
         conn.execute(
-            "INSERT INTO trade_log VALUES (NULL, 'exec1', 'Binance', 'BTC', 'long', 'False', 4500, 0, 'Open', ?, NULL, NULL, NULL, NULL)",
+            "INSERT INTO trade_log (strategy_execution_id, exchange, symbol, side, is_hedge, size_in_asset, fill_price, liquidation_price, open_close, open_time) VALUES ('exec1', 'Binance', 'BTC', 'long', 'False', 0.07, 65000.0, 0, 'Open', ?)",
             (datetime.now().isoformat(),)
         )
         conn.commit()
@@ -112,7 +120,7 @@ class TestRiskManager(unittest.TestCase):
         conn = sqlite3.connect(self.temp_db.name)
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         conn.execute(
-            "INSERT INTO trade_log VALUES (NULL, 'exec1', 'Binance', 'BTC', 'long', 'False', 100, 0, 'Close', ?, ?, -600, 0, 'pnl_exit')",
+            "INSERT INTO trade_log (strategy_execution_id, exchange, symbol, side, is_hedge, size_in_asset, fill_price, liquidation_price, open_close, open_time, close_time, pnl, accrued_funding, close_reason) VALUES ('exec1', 'Binance', 'BTC', 'long', 'False', 0.01, 60000.0, 0, 'Close', ?, ?, -600, 0, 'pnl_exit')",
             (now, now)
         )
         conn.commit()

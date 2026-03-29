@@ -46,6 +46,23 @@ class RiskManager:
         
         logger.info(f"RiskManager initialized - Max exposure/asset: ${self.max_exposure_per_asset_usd}, "
                      f"Max leverage: {self.max_leverage}x, Daily loss cap: ${self.daily_loss_cap_usd}")
+        
+        # Auto-migrate: ensure fill_price column exists in legacy databases
+        self._ensure_fill_price_column()
+
+    def _ensure_fill_price_column(self):
+        """Add fill_price column to trade_log if missing (legacy DB migration)."""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute("PRAGMA table_info(trade_log)")
+                columns = [row[1] for row in cursor.fetchall()]
+                if columns and 'fill_price' not in columns:
+                    cursor.execute("ALTER TABLE trade_log ADD COLUMN fill_price REAL")
+                    conn.commit()
+                    logger.warning("RiskManager - Migrated trade_log: added fill_price column")
+        except Exception as e:
+            logger.error(f"RiskManager - Schema migration check failed: {e}")
 
     def is_kill_switch_active(self) -> bool:
         """Check if the emergency kill switch is engaged."""
@@ -204,19 +221,11 @@ class RiskManager:
     
     def _get_current_exposure_for_asset(self, symbol: str) -> float:
         """Get current USD notional exposure for a given asset.
-        Positions without fill_price contribute $0 exposure (fail-safe)."""
+        Raises ValueError if any open positions are missing fill_price."""
         try:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
-                # Multiply size_in_asset by fill_price to get USD notional
-                # fill_price=NULL -> 0 exposure (fail-safe: never undercount silently)
-                cursor.execute(
-                    """SELECT COALESCE(SUM(ABS(size_in_asset) * COALESCE(fill_price, 0)), 0) 
-                       FROM trade_log WHERE symbol = ? AND open_close = 'Open'""",
-                    (symbol,)
-                )
-                exposure = float(cursor.fetchone()[0])
-                # Warn if any rows are missing fill_price
+                # Fail-safe: refuse to compute exposure if fill_price is missing
                 cursor.execute(
                     """SELECT COUNT(*) FROM trade_log 
                        WHERE symbol = ? AND open_close = 'Open' AND fill_price IS NULL""",
@@ -224,8 +233,16 @@ class RiskManager:
                 )
                 missing = cursor.fetchone()[0]
                 if missing > 0:
-                    logger.warning(f"RiskManager - {missing} open trade(s) for {symbol} missing fill_price; exposure may be understated")
-                return exposure
+                    msg = f"Cannot evaluate exposure for {symbol}: {missing} open trade(s) missing fill_price"
+                    logger.error(f"RiskManager - {msg}")
+                    raise ValueError(msg)
+                
+                cursor.execute(
+                    """SELECT COALESCE(SUM(ABS(size_in_asset) * fill_price), 0) 
+                       FROM trade_log WHERE symbol = ? AND open_close = 'Open'""",
+                    (symbol,)
+                )
+                return float(cursor.fetchone()[0])
         except Exception as e:
             logger.error(f"RiskManager - Error getting asset exposure for {symbol}: {e}")
             return 0.0
@@ -236,7 +253,7 @@ class RiskManager:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
                 cursor.execute(
-                    """SELECT COALESCE(SUM(ABS(size_in_asset) * COALESCE(fill_price, 0)), 0) 
+                    """SELECT COALESCE(SUM(ABS(size_in_asset) * fill_price), 0) 
                        FROM trade_log WHERE exchange = ? AND open_close = 'Open'""",
                     (exchange,)
                 )
@@ -251,7 +268,7 @@ class RiskManager:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
                 cursor.execute(
-                    """SELECT COALESCE(SUM(ABS(size_in_asset) * COALESCE(fill_price, 0)), 0) 
+                    """SELECT COALESCE(SUM(ABS(size_in_asset) * fill_price), 0) 
                        FROM trade_log WHERE open_close = 'Open'"""
                 )
                 return float(cursor.fetchone()[0])
