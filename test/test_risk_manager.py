@@ -7,6 +7,7 @@ import sqlite3
 import os
 import sys
 import tempfile
+import warnings
 from datetime import datetime, timedelta
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -21,26 +22,25 @@ class TestRiskManager(unittest.TestCase):
         self.temp_db.close()
         
         # Create schema
-        conn = sqlite3.connect(self.temp_db.name)
-        conn.execute('''CREATE TABLE IF NOT EXISTS trade_log (
-            id INTEGER PRIMARY KEY,
-            strategy_execution_id TEXT NOT NULL,
-            exchange TEXT NOT NULL,
-            symbol TEXT NOT NULL,
-            side TEXT NOT NULL,
-            is_hedge TEXT NOT NULL,
-            size_in_asset REAL NOT NULL,
-            fill_price REAL,
-            liquidation_price REAL NOT NULL,
-            open_close TEXT NOT NULL,
-            open_time DATETIME,
-            close_time DATETIME,
-            pnl REAL,
-            accrued_funding REAL,
-            close_reason TEXT
-        )''')
-        conn.commit()
-        conn.close()
+        with sqlite3.connect(self.temp_db.name) as conn:
+            conn.execute('''CREATE TABLE IF NOT EXISTS trade_log (
+                id INTEGER PRIMARY KEY,
+                strategy_execution_id TEXT NOT NULL,
+                exchange TEXT NOT NULL,
+                symbol TEXT NOT NULL,
+                side TEXT NOT NULL,
+                is_hedge TEXT NOT NULL,
+                size_in_asset REAL NOT NULL,
+                fill_price REAL,
+                liquidation_price REAL NOT NULL,
+                open_close TEXT NOT NULL,
+                open_time DATETIME,
+                close_time DATETIME,
+                pnl REAL,
+                accrued_funding REAL,
+                close_reason TEXT
+            )''')
+            conn.commit()
         
         # Set env vars for risk manager
         os.environ['MAX_EXPOSURE_PER_ASSET_USD'] = '5000'
@@ -52,14 +52,24 @@ class TestRiskManager(unittest.TestCase):
         os.environ['MAX_FUNDING_HORIZON_HOURS'] = '72'
         os.environ['TRADE_LEVERAGE'] = '5'
         
+        warnings.simplefilter('ignore', ResourceWarning)
+        
         from GlobalUtils.risk_manager import RiskManager
         self.rm = RiskManager(db_path=self.temp_db.name)
     
     def tearDown(self):
-        # Force close any lingering SQLite connections before unlinking
-        del self.rm
+        # Explicitly close any SQLite connections held by RiskManager
+        import sqlite3
         import gc
+        # Drop reference to RiskManager so its connections can be GC'd
+        del self.rm
         gc.collect()
+        # Also force-close any lingering connections to this specific file
+        try:
+            conn = sqlite3.connect(self.temp_db.name)
+            conn.close()
+        except Exception:
+            pass
         try:
             os.unlink(self.temp_db.name)
         except PermissionError:
@@ -86,13 +96,12 @@ class TestRiskManager(unittest.TestCase):
     
     def test_exposure_exceeds_asset_limit(self):
         # Insert an existing open position
-        conn = sqlite3.connect(self.temp_db.name)
-        conn.execute(
-            "INSERT INTO trade_log (strategy_execution_id, exchange, symbol, side, is_hedge, size_in_asset, fill_price, liquidation_price, open_close, open_time) VALUES ('exec1', 'Binance', 'BTC', 'long', 'False', 0.07, 65000.0, 0, 'Open', ?)",
-            (datetime.now().isoformat(),)
-        )
-        conn.commit()
-        conn.close()
+        with sqlite3.connect(self.temp_db.name) as conn:
+            conn.execute(
+                "INSERT INTO trade_log (strategy_execution_id, exchange, symbol, side, is_hedge, size_in_asset, fill_price, liquidation_price, open_close, open_time) VALUES ('exec1', 'Binance', 'BTC', 'long', 'False', 0.07, 65000.0, 0, 'Open', ?)",
+                (datetime.now().isoformat(),)
+            )
+            conn.commit()
         
         opportunity = {'symbol': 'BTC', 'long_exchange': 'Binance', 'short_exchange': 'ByBit'}
         passed, reason = self.rm.check_exposure_limits(opportunity, 1000)
@@ -117,14 +126,13 @@ class TestRiskManager(unittest.TestCase):
         self.assertTrue(passed)
     
     def test_daily_loss_exceeds_cap(self):
-        conn = sqlite3.connect(self.temp_db.name)
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        conn.execute(
-            "INSERT INTO trade_log (strategy_execution_id, exchange, symbol, side, is_hedge, size_in_asset, fill_price, liquidation_price, open_close, open_time, close_time, pnl, accrued_funding, close_reason) VALUES ('exec1', 'Binance', 'BTC', 'long', 'False', 0.01, 60000.0, 0, 'Close', ?, ?, -600, 0, 'pnl_exit')",
-            (now, now)
-        )
-        conn.commit()
-        conn.close()
+        with sqlite3.connect(self.temp_db.name) as conn:
+            conn.execute(
+                "INSERT INTO trade_log (strategy_execution_id, exchange, symbol, side, is_hedge, size_in_asset, fill_price, liquidation_price, open_close, open_time, close_time, pnl, accrued_funding, close_reason) VALUES ('exec1', 'Binance', 'BTC', 'long', 'False', 0.01, 60000.0, 0, 'Close', ?, ?, -600, 0, 'pnl_exit')",
+                (now, now)
+            )
+            conn.commit()
         
         passed, reason = self.rm.check_daily_loss()
         self.assertFalse(passed)

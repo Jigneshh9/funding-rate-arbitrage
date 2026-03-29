@@ -1,6 +1,9 @@
 # web3 is imported lazily inside functions that need it (see initialise_client, etc.)
 import os
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    load_dotenv = lambda: None  # no-op if dotenv not installed
 import requests
 from decimal import Decimal, InvalidOperation
 from enum import Enum
