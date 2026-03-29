@@ -7,6 +7,7 @@
 <meta name="description" content="Bloomberg-style dashboard for a delta-neutral funding rate arbitrage system across multiple crypto exchanges.">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
+/* Google Fonts — loads online; system monospace fallback for offline */
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,7 +29,7 @@
   --text: #e5e5e5;
   --text-dim: #888;
   --text-muted: #555;
-  --font: 'JetBrains Mono', 'Courier New', monospace;
+  --font: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace;
 }
 
 html { scroll-behavior: smooth; }
@@ -428,6 +429,19 @@ input[type="range"]::-webkit-slider-thumb {
   margin: 4px 0;
 }
 
+/* ─── DEMO BANNER ─── */
+.demo-banner {
+  background: #1a1500;
+  border-bottom: 1px solid var(--amber-dim);
+  padding: 6px 20px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--amber);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
 /* ─── FOOTER ─── */
 .footer {
   padding: 24px;
@@ -452,6 +466,11 @@ input[type="range"]::-webkit-slider-thumb {
 </style>
 </head>
 <body>
+
+<!-- ═══════════════════ DEMO BANNER ═══════════════════ -->
+<div class="demo-banner" id="demoBanner">
+  ⚠ DEMO MODE — All metrics and trade data shown are simulated for presentation purposes
+</div>
 
 <!-- ═══════════════════ NAV ═══════════════════ -->
 <nav class="nav" id="top">
@@ -658,7 +677,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 <!-- ═══════════════════ SECTION 5: BACKTEST ═══════════════════ -->
 <section class="section" id="backtest">
-  <div class="section-title">Backtesting Panel</div>
+  <div class="section-title">Backtesting Panel <span style="font-size:10px;color:var(--text-dim);font-weight:400;letter-spacing:0;text-transform:none;">(Simulated 30-Day Data)</span></div>
   <div class="chart-container">
     <canvas id="pnlChart" height="300"></canvas>
   </div>
@@ -951,28 +970,30 @@ function updateSimulator() {
   });
 })();
 
-// ─── CHART.JS BACKTEST ───
+// ─── CHART.JS BACKTEST (Deterministic Simulated Data) ───
 (function() {
+  if (typeof Chart === 'undefined') {
+    document.getElementById('pnlChart').parentElement.innerHTML =
+      '<div style="padding:40px;text-align:center;color:var(--text-dim);">Chart.js CDN unavailable (offline mode). Chart will display when online.</div>';
+    return;
+  }
   const ctx = document.getElementById('pnlChart').getContext('2d');
 
-  // Generate mock 30-day cumulative PnL
+  // Deterministic simulated 30-day cumulative PnL (hardcoded for reproducibility)
   const labels = [];
-  const data = [];
-  let cumPnl = 0;
-  for (let i = 1; i <= 30; i++) {
-    labels.push('Day ' + i);
-    // Random daily PnL: mostly positive, occasionally negative
-    const daily = (Math.random() * 200 - 40) * (Math.random() > 0.25 ? 1 : -0.6);
-    cumPnl += daily;
-    data.push(Math.round(cumPnl * 100) / 100);
-  }
+  for (let i = 1; i <= 30; i++) labels.push('Day ' + i);
+  const data = [
+    -45, 12, 68, 135, 102, 187, 241, 198, 276, 312,
+    289, 354, 410, 378, 445, 502, 468, 534, 510, 589,
+    620, 585, 648, 702, 675, 738, 790, 812, 865, 920
+  ];
 
   new Chart(ctx, {
     type: 'line',
     data: {
       labels: labels,
       datasets: [{
-        label: 'Cumulative PnL ($)',
+        label: 'Simulated Cumulative PnL ($)',
         data: data,
         borderColor: '#f59e0b',
         backgroundColor: 'rgba(245, 158, 11, 0.08)',

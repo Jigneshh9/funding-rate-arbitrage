@@ -1,0 +1,5 @@
+{"timestamp": "2026-03-29T18:32:13.862094Z", "level": "ERROR", "module": "GlobalUtils.logger", "message": "MatchingEngine - Funding rates are empty or not passed correctly."}
+{"timestamp": "2026-03-29T18:32:53.089096Z", "level": "ERROR", "module": "GlobalUtils.logger", "message": "MatchingEngine - Funding rates are empty or not passed correctly."}
+{"timestamp": "2026-03-29T18:35:22.863799Z", "level": "ERROR", "module": "GlobalUtils.logger", "message": "MatchingEngine - Funding rates are empty or not passed correctly."}
+{"timestamp": "2026-03-29T18:38:08.233364Z", "level": "ERROR", "module": "GlobalUtils.logger", "message": "MatchingEngine - Funding rates are empty or not passed correctly."}
+{"timestamp": "2026-03-29T18:47:13.640498Z", "level": "ERROR", "module": "GlobalUtils.logger", "message": "MatchingEngine - Funding rates are empty or not passed correctly."}

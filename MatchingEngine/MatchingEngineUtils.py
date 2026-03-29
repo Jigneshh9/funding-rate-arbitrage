@@ -1,5 +1,11 @@
 import re
 
+def get_base_block_number():
+    """Lazy wrapper — imports globalUtils only when actually called,
+    so MatchingEngine can be imported without web3/dotenv installed."""
+    from GlobalUtils.globalUtils import get_base_block_number as _impl
+    return _impl()
+
 
 def normalize_symbol(symbol: str) -> str:
     """Normalize exchange-specific symbol format to a base token name.

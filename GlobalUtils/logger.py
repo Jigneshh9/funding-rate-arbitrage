@@ -1,6 +1,10 @@
 import logging
 import inspect
-from pubsub import pub
+try:
+    from pubsub import pub
+    _HAS_PUBSUB = True
+except ImportError:
+    _HAS_PUBSUB = False
 from functools import wraps
 import json
 from datetime import datetime
@@ -51,7 +55,8 @@ function_tracker_handler.setFormatter(function_tracker_formatter)
 function_logger.addHandler(function_tracker_handler)
 function_logger.setLevel(logging.DEBUG)
 
-pub.setListenerExcHandler(logging.exception)
+if _HAS_PUBSUB:
+    pub.setListenerExcHandler(logging.exception)
 
 def setup_topics():
     pub.addTopicDefnProvider(TopicDefinitionProvider(), pub.TOPIC_TREE_FROM_CLASS)

@@ -100,52 +100,46 @@ def get_gas_price() -> float:
     return 0.0
 
 # def get_price_from_pyth(symbol: str):
-#     try:
-#         response = GLOBAL_SYNTHETIX_CLIENT.pyth.get_price_from_symbols([symbol])
-        
-#         feed_id = next(iter(response['meta']))
-#         meta_data = response['meta'].get(feed_id, {})
-#         price: float = meta_data.get('price')
+#     Original Pyth-based implementation — replaced by get_asset_price() below
 
-#         if price is not None:
-#             return price
-
-#     except KeyError as ke:
-#         logger.error(f"GlobalUtils - KeyError accessing Pyth response data for {symbol}: {ke}")
-#         return None
-#     except Exception as e:
-#         logger.error(f"GlobalUtils - Unexpected error fetching asset price for {symbol} from Pyth: {e}")
-#         return None
-
+def get_asset_price(symbol: str) -> float:
+    """Get the current price of an asset in USD using Binance ticker.
+    Falls back to 0.0 on failure — callers should handle this gracefully.
+    """
+    try:
+        client = get_global_binance_client()
+        ticker = client.get_symbol_ticker(symbol=symbol.upper() + 'USDT')
+        price = float(ticker['price'])
+        return price
+    except Exception as e:
+        logger.error(f"GlobalUtils - Error fetching price for {symbol} from Binance: {e}")
+        return 0.0
 
 # def calculate_transaction_cost_usd(total_gas: int) -> float:
-#     try:
-#         gas_price_gwei = get_gas_price()
-#         eth_price_usd = get_price_from_pyth('ETH')
-#         gas_cost_eth = (gas_price_gwei * total_gas) / Decimal('1e9')
-#         transaction_cost_usd = float(gas_cost_eth) * eth_price_usd
-#         return transaction_cost_usd
-#     except (InvalidOperation, ValueError) as e:
-#         logger.error(f"GlobalUtils - Error calculating transaction cost: {e}")
-#     return 0.0
+#     Commented out — depends on deprecated Pyth oracle
 
-# def get_asset_amount_for_given_dollar_amount(asset: str, dollar_amount: float) -> float:
-#     try:
-#         asset_price = get_price_from_pyth(asset)
-#         asset_amount = dollar_amount / asset_price
-#         return asset_amount
-#     except ZeroDivisionError:
-#         logger.error(f"GlobalUtils - Error calculating asset amount for {asset}: Price is zero")
-#     return 0.0
+def get_asset_amount_for_given_dollar_amount(asset: str, dollar_amount: float) -> float:
+    """Convert a USD dollar amount to an equivalent asset amount using live price."""
+    try:
+        asset_price = get_asset_price(asset)
+        if asset_price <= 0:
+            logger.error(f"GlobalUtils - Cannot convert: price for {asset} is zero or unavailable")
+            return 0.0
+        asset_amount = dollar_amount / asset_price
+        return asset_amount
+    except ZeroDivisionError:
+        logger.error(f"GlobalUtils - Error calculating asset amount for {asset}: Price is zero")
+    return 0.0
 
-# def get_dollar_amount_for_given_asset_amount(asset: str, asset_amount: float) -> float:
-#     try:
-#         asset_price = get_price_from_pyth(asset)
-#         dollar_amount = asset_amount * asset_price
-#         return dollar_amount
-#     except Exception as e:
-#         logger.error(f"GlobalUtils - Error converting asset amount to dollar amount for {asset}: {e}")
-#     return 0.0
+def get_dollar_amount_for_given_asset_amount(asset: str, asset_amount: float) -> float:
+    """Convert an asset amount to USD using live price."""
+    try:
+        asset_price = get_asset_price(asset)
+        dollar_amount = asset_amount * asset_price
+        return dollar_amount
+    except Exception as e:
+        logger.error(f"GlobalUtils - Error converting asset amount to dollar amount for {asset}: {e}")
+    return 0.0
 
 def normalize_symbol(symbol: str) -> str:
     return symbol.replace('USDT', '').replace('PERP', '').replace('USD', '')

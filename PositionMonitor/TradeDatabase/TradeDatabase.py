@@ -74,7 +74,8 @@ class TradeLogger:
                 size = trade['size']
                 is_hedge = trade['is_hedge']
                 liquidation_price = trade['liquidation_price']
-                self.log_open_trade(strategy_execution_id, exchange, symbol, side, is_hedge, size, liquidation_price, open_time)
+                fill_price = trade.get('fill_price')
+                self.log_open_trade(strategy_execution_id, exchange, symbol, side, is_hedge, size, liquidation_price, open_time, fill_price)
             
             pub.sendMessage(EventsDirectory.TRADE_LOGGED.value, position_data=position_data)
 
@@ -89,21 +90,23 @@ class TradeLogger:
 
     def log_open_trade(self, strategy_execution_id, exchange, 
                        symbol, side, is_hedge, size, liquidation_price, 
-                       open_time=datetime.now()):
+                       open_time=datetime.now(), fill_price=None):
         try:
             with sqlite3.connect(self.db_path) as conn:
                 sql_query = '''
                     INSERT INTO trade_log (
                         strategy_execution_id, exchange, symbol, 
-                        side, is_hedge, size_in_asset, liquidation_price, open_close, open_time
+                        side, is_hedge, size_in_asset, liquidation_price, 
+                        fill_price, open_close, open_time
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, 'Open', ?);
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Open', ?);
                 '''
                 conn.execute(
                     sql_query, 
                     (
                         strategy_execution_id, exchange, symbol, 
-                        side, is_hedge, size, liquidation_price, open_time
+                        side, is_hedge, size, liquidation_price, 
+                        fill_price, open_time
                     )
                 )
                 logger.info(f"TradeLogger - Logged open trade for strategy_execution_id: {strategy_execution_id} on exchange: {exchange}")
