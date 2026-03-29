@@ -5,7 +5,8 @@ try:
 except ImportError:
     pass  # dotenv not required in test/CI environments
 from GlobalUtils.logger import logger
-from GlobalUtils.globalUtils import *
+from GlobalUtils.trade_helpers import adjust_trade_size_for_direction
+from GlobalUtils.globalUtils import get_asset_amount_for_given_dollar_amount
 
 def adjust_collateral_allocation(collateral_amounts: dict, long_exchange: str, short_exchange: str) -> float:
     try:

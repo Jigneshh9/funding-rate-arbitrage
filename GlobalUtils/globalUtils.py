@@ -54,33 +54,8 @@ class EventsDirectory(Enum):
     POSITION_CLOSED = "position_closed"
     TRADE_LOGGED = "trade_logged"
 
-DECIMALS = {
-    "BTC": 8,
-    "ETH": 18,
-    "SNX": 18,
-    "SOL": 9,
-    "W": 18,
-    "WIF": 6,
-    "ARB": 18,
-    "BNB": 18,
-    "ENA": 18,
-    "DOGE": 8,
-    "AVAX": 18,
-    "PENDLE": 18,
-    "NEAR": 24,
-    "AAVE": 18,
-    "ATOM": 6,
-    "XRP": 6,
-    "LINK": 18,
-    "UNI": 18,
-    "LTC": 8,
-    "OP": 18,
-    "GMX": 18,
-    "PEPE": 18,
-}
-
-def get_decimals_for_symbol(symbol):
-    return DECIMALS.get(symbol, None)
+# Re-export pure helpers from trade_helpers for backward compatibility
+from GlobalUtils.trade_helpers import DECIMALS, get_decimals_for_symbol, normalize_symbol, adjust_trade_size_for_direction
 
 def initialise_client():
     try:
@@ -103,12 +78,9 @@ def get_gas_price() -> float:
             return None
     return 0.0
 
-# def get_price_from_pyth(symbol: str):
-#     Original Pyth-based implementation — replaced by get_asset_price() below
-
 def get_asset_price(symbol: str) -> float:
     """Get the current price of an asset in USD using Binance ticker.
-    Falls back to 0.0 on failure — callers should handle this gracefully.
+    Falls back to 0.0 on failure -- callers should handle this gracefully.
     """
     try:
         client = get_global_binance_client()
@@ -118,9 +90,6 @@ def get_asset_price(symbol: str) -> float:
     except Exception as e:
         logger.error(f"GlobalUtils - Error fetching price for {symbol} from Binance: {e}")
         return 0.0
-
-# def calculate_transaction_cost_usd(total_gas: int) -> float:
-#     Commented out — depends on deprecated Pyth oracle
 
 def get_asset_amount_for_given_dollar_amount(asset: str, dollar_amount: float) -> float:
     """Convert a USD dollar amount to an equivalent asset amount using live price."""
@@ -144,15 +113,6 @@ def get_dollar_amount_for_given_asset_amount(asset: str, asset_amount: float) ->
     except Exception as e:
         logger.error(f"GlobalUtils - Error converting asset amount to dollar amount for {asset}: {e}")
     return 0.0
-
-def normalize_symbol(symbol: str) -> str:
-    return symbol.replace('USDT', '').replace('PERP', '').replace('USD', '')
-
-def adjust_trade_size_for_direction(trade_size: float, is_long: bool) -> float:
-    try:
-        return trade_size if is_long else trade_size * -1
-    except Exception as e:
-        logger.error(f'GlobalUtils - Failed to adjust trade size for direction, Error: {e}')
 
 def get_base_block_number_by_timestamp(timestamp: int) -> int:
     apikey = os.getenv('BASESCAN_API_KEY')
