@@ -6,7 +6,6 @@ except ImportError:
     pass  # dotenv not required in test/CI environments
 from GlobalUtils.logger import logger
 from GlobalUtils.trade_helpers import adjust_trade_size_for_direction
-from GlobalUtils.globalUtils import get_asset_amount_for_given_dollar_amount
 
 def adjust_collateral_allocation(collateral_amounts: dict, long_exchange: str, short_exchange: str) -> float:
     try:
@@ -48,6 +47,7 @@ def is_collateral_ratio_acceptable(collateral_amounts: dict, min_ratio=0.01):
 
 def calculate_adjusted_trade_size(opportunity: dict, is_long: bool, trade_size: float) -> float:
         try:
+            from GlobalUtils.globalUtils import get_asset_amount_for_given_dollar_amount
             leverage_factor = float(os.getenv('TRADE_LEVERAGE'))
             trade_size_in_asset = get_asset_amount_for_given_dollar_amount(opportunity['symbol'], trade_size)
             trade_size_with_leverage = trade_size_in_asset * leverage_factor
