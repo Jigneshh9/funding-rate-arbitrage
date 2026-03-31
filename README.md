@@ -262,5 +262,64 @@ Set `EMERGENCY_KILL_SWITCH=true` in `.env` and restart the bot. No new trades wi
 | `EMERGENCY_KILL_SWITCH` | Block all new trades | false |
 | `REHEDGE_THRESHOLD` | Delta drift threshold for re-hedge alerts | 0.05 |
 
+
+## Demo Dashboard (v3)
+
+A self-contained, Bloomberg-style simulation terminal for judge demos and presentations. **No backend, no API keys, no real orders** — everything runs in-browser.
+
+### Quick Start
+```bash
+# Option A: double-click the file
+open dashboard_v3.html
+
+# Option B: local server (recommended)
+python -m http.server 8765
+# then open http://localhost:8765/dashboard_v3.html
+```
+
+### Controls Reference
+
+| Control | Action |
+|---|---|
+| **▶ Start / ■ Stop** | Start/stop simulation engine |
+| **1x / 2x / 5x** | Tick speed (1000ms / 500ms / 200ms) |
+| **Seed checkbox** | Deterministic mode (seed=42) for reproducible demos |
+| **Tab clicks** | Switch between 6 views |
+
+### Keyboard Shortcuts
+
+| Key | Action |
+|---|---|
+| `Space` | Toggle Start/Stop |
+| `1`–`6` | Switch tabs |
+| `Escape` | Close detail drawer |
+
+### Tabs
+
+1. **Overview** — Metrics strip (PnL, win rate, Sharpe, drawdown, fees, filtered count) + mini equity/spread charts + recent trades
+2. **Live Opps** — Detected / Executed / Rejected opportunity panels with click-through details
+3. **Wallet & P&L** — Large hero equity chart with dataset toggles (Equity/Realized/Unrealized/Drawdown) and time ranges (5m/15m/1h/All)
+4. **Analytics** — Execution quality scatter, slippage histogram, latency, funding vs fees, opportunity rate, exchange rates
+5. **Risk** — Exposure stacked bars, spread volatility + z-score, position timeline, risk utilization gauges
+6. **Settings** — Wallet setup (label, address with EVM validation, balance, aliases, saved to localStorage), min edge threshold slider, exchange/token/size/leverage/risk config
+
+### Seeded vs Random Mode
+
+- **Seeded (default)**: Checkbox checked → seed=42 → identical run every time. Perfect for rehearsed demos.
+- **Random**: Uncheck → seed=Date.now() → every run is different.
+
+### 10-Minute Judge Demo Script
+
+| Time | Tab | What to Show |
+|---|---|---|
+| 0–1 min | Overview | Explain problem: funding rate divergence across CeFi/DeFi perps. Show terminal layout, "SIMULATED" badge. |
+| 1–2 min | Settings | Configure wallet (label + address + $10k balance). Set threshold to 0.10%. Explain exchanges/tokens selection. |
+| 2–3 min | Overview | Click Start. Explain status pill, speed controls, seed mode. Watch metrics populate. |
+| 3–5 min | Live Opps | Watch opportunities stream in. Click a REJECTED row → show detail drawer with spread/risk checks (PASS/FAIL). Click an EXECUTED row → show PnL, fees, slippage, latency. |
+| 5–7 min | Wallet & P&L | Show hero chart growing. Toggle Realized vs Unrealized. Enable Drawdown overlay. Switch time range to 5m. Explain equity fluctuations aren't monotonic. |
+| 7–8 min | Analytics | Point out execution quality scatter, slippage distribution, latency patterns. Show funding vs fees divergence. |
+| 8–9 min | Risk | Show exposure distribution across exchanges. Explain risk gauges (green/amber/red). Show spread vol z-score. |
+| 9–10 min | Overview | Stop engine. Summarize: realistic PnL (ups AND downs), risk management, multi-venue arbitrage. Note: zero real API calls, zero wallet signing — pure simulation. |
+
 ## Tech Support 
 Any further questions please join the telegram chat at https://t.me/+ualID7ueKuJjMWJk
