@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
+  <rect width="100%" height="100%" fill="white" />
+  <text x="600.0" y="30" font-size="22" font-family="Arial" text-anchor="middle" fill="#0f172a">Ablation Study: Total Net PnL by Variant and Strategy</text>
+  <text x="25" y="300.0" font-size="14" font-family="Arial" transform="rotate(-90 25,300.0)" fill="#334155">Total Net PnL (USD)</text>
+  <line x1="80" y1="300.0" x2="1160" y2="300.0" stroke="#94a3b8" stroke-width="1" />
+  <line x1="80" y1="80" x2="80" y2="520" stroke="#94a3b8" stroke-width="1" />
+  <rect x="80" y="45" width="18" height="10" fill="#2563eb" /><text x="104" y="54" font-size="12" font-family="Arial" fill="#334155">fixed_horizon_baseline</text><rect x="220" y="45" width="18" height="10" fill="#22c55e" /><text x="244" y="54" font-size="12" font-family="Arial" fill="#334155">sign_flip_baseline</text><rect x="360" y="45" width="18" height="10" fill="#f59e0b" /><text x="384" y="54" font-size="12" font-family="Arial" fill="#334155">threshold_convergence</text>
+  <rect x="125.0" y="242.8" width="81.0" height="57.2" fill="#2563eb" opacity="0.9" /><rect x="485.0" y="239.3" width="81.0" height="60.7" fill="#2563eb" opacity="0.9" /><rect x="845.0" y="245.7" width="81.0" height="54.3" fill="#2563eb" opacity="0.9" /><rect x="215.0" y="90.1" width="81.0" height="209.9" fill="#22c55e" opacity="0.9" /><rect x="575.0" y="90.3" width="81.0" height="209.7" fill="#22c55e" opacity="0.9" /><rect x="935.0" y="90.0" width="81.0" height="210.0" fill="#22c55e" opacity="0.9" /><rect x="305.0" y="145.2" width="81.0" height="154.8" fill="#f59e0b" opacity="0.9" /><rect x="665.0" y="145.9" width="81.0" height="154.1" fill="#f59e0b" opacity="0.9" /><rect x="1025.0" y="145.8" width="81.0" height="154.2" fill="#f59e0b" opacity="0.9" />
+  <text x="260.0" y="540" font-size="11" fill="#334155" text-anchor="middle">entry_threshold_0_0001</text><text x="620.0" y="540" font-size="11" fill="#334155" text-anchor="middle">entry_threshold_0_0002</text><text x="980.0" y="540" font-size="11" fill="#334155" text-anchor="middle">entry_threshold_5e-05</text>
+</svg>

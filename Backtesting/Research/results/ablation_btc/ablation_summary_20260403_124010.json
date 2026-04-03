@@ -1,0 +1,173 @@
+[
+  {
+    "variant_name": "entry_threshold=5e-05",
+    "strategy_name": "fixed_horizon_baseline",
+    "parameters": {
+      "entry_threshold": 5e-05
+    },
+    "aggregate": {
+      "symbols_tested": 1,
+      "total_trade_count": 631,
+      "total_gross_pnl_usd": 2488.5217694849657,
+      "total_net_pnl_usd": 721.721769484966,
+      "total_cost_usd": 1766.8,
+      "avg_win_rate": 0.7416798732171157,
+      "avg_return_pct": 0.0721721769484966,
+      "avg_sharpe_like": 13.394462825549919,
+      "avg_max_drawdown_pct": 0.2615631728173782,
+      "avg_profit_factor": 6.244738822673956
+    }
+  },
+  {
+    "variant_name": "entry_threshold=5e-05",
+    "strategy_name": "sign_flip_baseline",
+    "parameters": {
+      "entry_threshold": 5e-05
+    },
+    "aggregate": {
+      "symbols_tested": 1,
+      "total_trade_count": 3,
+      "total_gross_pnl_usd": 2799.922209036837,
+      "total_net_pnl_usd": 2791.522209036837,
+      "total_cost_usd": 8.399999999999999,
+      "avg_win_rate": 1.0,
+      "avg_return_pct": 0.2791522209036837,
+      "avg_sharpe_like": 1.331996657496844,
+      "avg_max_drawdown_pct": 0.0,
+      "avg_profit_factor": Infinity
+    }
+  },
+  {
+    "variant_name": "entry_threshold=5e-05",
+    "strategy_name": "threshold_convergence",
+    "parameters": {
+      "entry_threshold": 5e-05
+    },
+    "aggregate": {
+      "symbols_tested": 1,
+      "total_trade_count": 228,
+      "total_gross_pnl_usd": 2688.5519505049688,
+      "total_net_pnl_usd": 2050.151950504969,
+      "total_cost_usd": 638.4,
+      "avg_win_rate": 0.9649122807017544,
+      "avg_return_pct": 0.20501519505049692,
+      "avg_sharpe_like": 21.12189457558443,
+      "avg_max_drawdown_pct": 0.003024264224506099,
+      "avg_profit_factor": 215.53523545984754
+    }
+  },
+  {
+    "variant_name": "entry_threshold=0.0001",
+    "strategy_name": "fixed_horizon_baseline",
+    "parameters": {
+      "entry_threshold": 0.0001
+    },
+    "aggregate": {
+      "symbols_tested": 1,
+      "total_trade_count": 614,
+      "total_gross_pnl_usd": 2480.0558642677993,
+      "total_net_pnl_usd": 760.8558642677992,
+      "total_cost_usd": 1719.1999999999998,
+      "avg_win_rate": 0.762214983713355,
+      "avg_return_pct": 0.07608558642677993,
+      "avg_sharpe_like": 14.627609760362203,
+      "avg_max_drawdown_pct": 0.2615631728173782,
+      "avg_profit_factor": 8.616801769830493
+    }
+  },
+  {
+    "variant_name": "entry_threshold=0.0001",
+    "strategy_name": "sign_flip_baseline",
+    "parameters": {
+      "entry_threshold": 0.0001
+    },
+    "aggregate": {
+      "symbols_tested": 1,
+      "total_trade_count": 3,
+      "total_gross_pnl_usd": 2799.091004496675,
+      "total_net_pnl_usd": 2790.691004496675,
+      "total_cost_usd": 8.399999999999999,
+      "avg_win_rate": 1.0,
+      "avg_return_pct": 0.2790691004496675,
+      "avg_sharpe_like": 1.331349552683006,
+      "avg_max_drawdown_pct": 0.0,
+      "avg_profit_factor": Infinity
+    }
+  },
+  {
+    "variant_name": "entry_threshold=0.0001",
+    "strategy_name": "threshold_convergence",
+    "parameters": {
+      "entry_threshold": 0.0001
+    },
+    "aggregate": {
+      "symbols_tested": 1,
+      "total_trade_count": 222,
+      "total_gross_pnl_usd": 2679.999851544933,
+      "total_net_pnl_usd": 2058.399851544933,
+      "total_cost_usd": 621.5999999999999,
+      "avg_win_rate": 0.9954954954954955,
+      "avg_return_pct": 0.2058399851544933,
+      "avg_sharpe_like": 21.986685907636325,
+      "avg_max_drawdown_pct": 0.0003302852558163614,
+      "avg_profit_factor": 3538.932501489523
+    }
+  },
+  {
+    "variant_name": "entry_threshold=0.0002",
+    "strategy_name": "fixed_horizon_baseline",
+    "parameters": {
+      "entry_threshold": 0.0002
+    },
+    "aggregate": {
+      "symbols_tested": 1,
+      "total_trade_count": 585,
+      "total_gross_pnl_usd": 2445.288174774093,
+      "total_net_pnl_usd": 807.288174774093,
+      "total_cost_usd": 1638.0,
+      "avg_win_rate": 0.7965811965811965,
+      "avg_return_pct": 0.0807288174774093,
+      "avg_sharpe_like": 16.300531986962145,
+      "avg_max_drawdown_pct": 0.13151112529508174,
+      "avg_profit_factor": 16.276502548730335
+    }
+  },
+  {
+    "variant_name": "entry_threshold=0.0002",
+    "strategy_name": "sign_flip_baseline",
+    "parameters": {
+      "entry_threshold": 0.0002
+    },
+    "aggregate": {
+      "symbols_tested": 1,
+      "total_trade_count": 3,
+      "total_gross_pnl_usd": 2795.8179294758256,
+      "total_net_pnl_usd": 2787.4179294758255,
+      "total_cost_usd": 8.399999999999999,
+      "avg_win_rate": 1.0,
+      "avg_return_pct": 0.27874179294758256,
+      "avg_sharpe_like": 1.3287807913550984,
+      "avg_max_drawdown_pct": 0.0,
+      "avg_profit_factor": Infinity
+    }
+  },
+  {
+    "variant_name": "entry_threshold=0.0002",
+    "strategy_name": "threshold_convergence",
+    "parameters": {
+      "entry_threshold": 0.0002
+    },
+    "aggregate": {
+      "symbols_tested": 1,
+      "total_trade_count": 212,
+      "total_gross_pnl_usd": 2642.5366054074625,
+      "total_net_pnl_usd": 2048.9366054074626,
+      "total_cost_usd": 593.5999999999999,
+      "avg_win_rate": 1.0,
+      "avg_return_pct": 0.20489366054074626,
+      "avg_sharpe_like": 22.855745316018062,
+      "avg_max_drawdown_pct": 0.0,
+      "avg_profit_factor": Infinity
+    }
+  }
+]

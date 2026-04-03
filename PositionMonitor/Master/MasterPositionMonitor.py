@@ -4,6 +4,7 @@ from PositionMonitor.Binance.BinancePositionMonitor import BinancePositionMonito
 from PositionMonitor.GMX.GMXPositionMonitor import GMXPositionMonitor
 from PositionMonitor.ByBit.ByBitPositionMonitor import ByBitPositionMonitor
 from PositionMonitor.Master.MasterPositionMonitorUtils import *
+from GlobalUtils.position_logic import parse_bool_flag, calculate_relative_delta
 from GlobalUtils.logger import *
 from GlobalUtils.globalUtils import *
 from GlobalUtils.MarketDirectories.SynthetixMarketDirectory import SynthetixMarketDirectory
@@ -108,8 +109,8 @@ class MasterPositionMonitor():
             first_funding_rate = abs(first_funding_rate)
             second_funding_rate = abs(second_funding_rate)
 
-            first_position_is_hedge = position_one['is_hedge'].lower() == 'True'
-            second_position_is_hedge = position_two['is_hedge'].lower() == 'True'
+            first_position_is_hedge = parse_bool_flag(position_one.get('is_hedge'))
+            second_position_is_hedge = parse_bool_flag(position_two.get('is_hedge'))
 
             if first_position_is_hedge == True and first_funding_rate > second_funding_rate:
                 return False
@@ -127,24 +128,17 @@ class MasterPositionMonitor():
     def is_position_delta_within_bounds(self, exchanges: list) -> bool:
         try:
             delta_bound = float(os.getenv('DELTA_BOUND', '0.03'))
-            positions = {}
+            positions = []
 
             for exchange in exchanges:
                 position = get_open_position_for_exchange(exchange)
                 if not position:
                     logger.error(f"MasterPositionMonitor - Position for exchange {exchange} is missing when trying to calculate delta.")
                     return False
-                notional_value = float(position['size_in_asset'])
-                if position['side'].upper() == 'SHORT':
-                    notional_value = -notional_value
-                positions[exchange] = notional_value
+                positions.append(position)
 
-            total_absolute_notional_value = sum(abs(value) for value in positions.values())
-            absolute_delta = abs(positions[exchanges[0]] - positions[exchanges[1]])
-            relative_delta = (absolute_delta / total_absolute_notional_value) if total_absolute_notional_value else 0
-
-
-            return relative_delta - 1 <= delta_bound
+            relative_delta = calculate_relative_delta(positions)
+            return relative_delta <= delta_bound
         except Exception as e:
             logger.error(f"MasterPositionMonitor - Unexpected error in checking position delta: {e}")
             return False

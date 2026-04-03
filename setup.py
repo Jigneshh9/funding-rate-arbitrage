@@ -15,6 +15,7 @@ setup(
         'console_scripts': [
             'project-run = Main.run:run',
             'project-run-demo = Main.run:demo',
+            'run-research-experiments = Backtesting.Research.run:main',
             'deploy-collateral-synthetix = TxExecution.Synthetix.run:main',
             'deploy-collateral-hmx = TxExecution.HMX.run:main',
             'close-position-pair = TxExecution.Master.run:main',

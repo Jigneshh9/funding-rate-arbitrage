@@ -161,5 +161,41 @@ class TestCollateralUtils(unittest.TestCase):
         self.assertFalse(result)
 
 
+class TestPositionMonitorUtils(unittest.TestCase):
+    """Test post-trade monitoring helper logic."""
+
+    def test_parse_bool_flag_handles_string_case(self):
+        from GlobalUtils.position_logic import parse_bool_flag
+
+        self.assertTrue(parse_bool_flag('True'))
+        self.assertTrue(parse_bool_flag('true'))
+        self.assertFalse(parse_bool_flag('False'))
+        self.assertFalse(parse_bool_flag(None))
+
+    def test_signed_position_size_respects_short_side(self):
+        from GlobalUtils.position_logic import get_signed_position_size
+
+        self.assertEqual(get_signed_position_size({'size_in_asset': 2.5, 'side': 'Long'}), 2.5)
+        self.assertEqual(get_signed_position_size({'size_in_asset': 2.5, 'side': 'SHORT'}), -2.5)
+
+    def test_calculate_relative_delta_perfect_hedge(self):
+        from GlobalUtils.position_logic import calculate_relative_delta
+
+        relative_delta = calculate_relative_delta([
+            {'size_in_asset': 1.0, 'side': 'Long'},
+            {'size_in_asset': 1.0, 'side': 'Short'},
+        ])
+        self.assertAlmostEqual(relative_delta, 0.0)
+
+    def test_calculate_relative_delta_partial_imbalance(self):
+        from GlobalUtils.position_logic import calculate_relative_delta
+
+        relative_delta = calculate_relative_delta([
+            {'size_in_asset': 1.0, 'side': 'Long'},
+            {'size_in_asset': 0.8, 'side': 'Short'},
+        ])
+        self.assertAlmostEqual(relative_delta, 0.1111111111, places=6)
+
+
 if __name__ == '__main__':
     unittest.main()
